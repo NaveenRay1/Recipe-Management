@@ -36,13 +36,13 @@ const listRecipes = async (query) => {
   if (query.q) {
     const like = `%${query.q.trim()}%`;
     const ing = await Ingredient.findAll({
-      where: { name: { [Op.iLike]: like } },
+      where: { name: { [Op.like]: like } },
       attributes: ["recipeId"],
       raw: true,
     });
     where[Op.or] = [
-      { title: { [Op.iLike]: like } },
-      { description: { [Op.iLike]: like } },
+      { title: { [Op.like]: like } },
+      { description: { [Op.like]: like } },
       { id: { [Op.in]: ing.map((i) => i.recipeId) } },
     ];
   }
@@ -52,7 +52,7 @@ const listRecipes = async (query) => {
     const terms = query.ingredient.split(",").map((t) => t.trim()).filter(Boolean);
     for (const term of terms) {
       const rows = await Ingredient.findAll({
-        where: { name: { [Op.iLike]: `%${term}%` } },
+        where: { name: { [Op.like]: `%${term}%` } },
         attributes: ["recipeId"],
         raw: true,
       });

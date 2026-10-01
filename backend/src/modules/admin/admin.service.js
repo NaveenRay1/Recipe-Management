@@ -10,7 +10,7 @@ const listUsers = async (query) => {
   if (query.role) where.role = query.role;
   if (query.q) {
     const like = `%${query.q.trim()}%`;
-    where[Op.or] = [{ name: { [Op.iLike]: like } }, { email: { [Op.iLike]: like } }];
+    where[Op.or] = [{ name: { [Op.like]: like } }, { email: { [Op.like]: like } }];
   }
 
   const { rows, count } = await User.findAndCountAll({
